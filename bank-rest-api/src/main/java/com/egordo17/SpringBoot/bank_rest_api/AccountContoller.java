@@ -9,6 +9,9 @@ it represents, and how to use it.
 */
 package com.egordo17.SpringBoot.bank_rest_api;
 
-public class AccountResource {
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class AccountContoller {
     
 }
