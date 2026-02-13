@@ -10,6 +10,9 @@ it represents, and how to use it.
 package com.egordo17.SpringBoot.bank_rest_api;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 
 
@@ -17,7 +20,9 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor 
 @AllArgsConstructor
 public class Account {
-    private float balance;
-    private String currency_type;
-    private String account_status;
+    private String accountID;             
+    private String accountNumber;
+    private BigDecimal balance;
+    private String currencyType;
+    private AccountStatus accountStatus;
 }
