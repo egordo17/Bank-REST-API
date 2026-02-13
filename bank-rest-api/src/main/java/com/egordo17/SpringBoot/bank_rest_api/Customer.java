@@ -24,23 +24,23 @@ public class Customer {
     private String middle_name;
     private String last_name;
     //Date of birth
-    private String date_of_birth;
+    private String dateOfBirth;
     //Government ID
-    private String id_type;// SSN , Passport, Driver's License
-    private String id_number;
-    private String expiry_date;
+    private String idType;// SSN , Passport, Driver's License
+    private String idNumber;
+    private String expiryDate;
     //Contact information
     private String email;
     private String phone_number;
-    private String physical_address;
+    private String physicalAddress;
  
-    private String username;
+    private String customerUsername;
     private String password;
     //Employment and financial Profile
-    private String employment_status;
-    private String employer_name;
-    private int income_range;
-    private String source_of_wealth;
+    private String employmentStatus;
+    private String employerName;
+    private int incomeRange;
+    private String sourceOfWealth;
 
  
  
