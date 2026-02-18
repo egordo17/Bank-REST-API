@@ -22,34 +22,9 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class CustomerService {
 
-    private static List<Customer> fakeCustomers = new ArrayList();
+    private static List<Customer> fakeCustomers = fakeDataBase.customers;
 
-    static{
-
-        Customer c1 = new Customer(
-            "Jordan", "Michael", "Smith", 
-            "1985-05-12", "SSN", "999-00-1234", "2030-01-01",
-            "j.smith@example.com", "555-010-8899", "123 Maple St, Springfield, IL",
-            "jsmith85", "P@ssword123",
-            "Employed", "Tech Solutions Inc.", 85000, "Salary"
-        );
-        fakeCustomers.add(c1);
-
-        Customer c2 = new Customer("Elena", "Sofia", "Rodriguez", 
-                "1992-11-23", "Passport", "A12345678", "2028-06-15",
-                "elena.rod@provider.net", "555-012-4455", "742 Evergreen Terrace, Portland, OR",
-                "erodriguez", "Secure!2026",
-                "Self-Employed", "Freelance Design", 120000, "Business Revenue");
-        fakeCustomers.add(c2);
-
-        Customer c3 = new Customer("Marcus", "Tyrone", "Johnson", 
-                "1978-02-04", "Driver's License", "D987654321", "2027-10-10",
-                "marcus.j@webmail.com", "555-044-3322", "888 Skyline Blvd, Austin, TX",
-                "mjohnson78", "HiddenPath77",
-                "Employed", "Global Logistics Corp", 65000, "Salary");
-        fakeCustomers.add(c3);
-    }
-
+    
     public List<Customer> retrieveAllCustomers() {
         
         return fakeCustomers;
@@ -78,6 +53,23 @@ public class CustomerService {
 
         return ResponseEntity.ok().build();
     }
+
+    public void registerNewCustomer(Customer newCustomer) {
+        // TODO Auto-generated method stub
+        fakeCustomers.add(newCustomer);
+    }
+
+    public void deleteCustomerByUsername(String customerUsername) {
+        // TODO Auto-generated method stub
+        List<Customer> fakeCustomers = retrieveAllCustomers();
+        if(fakeCustomers == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
+        }
+        Predicate<? super Customer> predicate = customerUsername1 -> customerUsername1.getCustomerUsername().equalsIgnoreCase(customerUsername);
+        fakeCustomers.removeIf(predicate);
+    }
+
+    
 
    
 

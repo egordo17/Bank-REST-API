@@ -9,6 +9,7 @@ it represents, and how to use it.
 */
 package com.egordo17.SpringBoot.bank_rest_api;
 
+import java.io.ObjectInputFilter.Status;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -22,21 +23,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AccountService {
-    private static List<Account> fakeAccounts = new ArrayList();
-    static {
-        //Initial Test Data
-        fakeAccounts.add(new Account("1", "CH-9920", BigDecimal.valueOf(1250.00), "USD", AccountStatus.ACTIVE));
-        fakeAccounts.add(new Account("2", "SV-1104", BigDecimal.valueOf(50000.00), "USD", AccountStatus.ACTIVE));
-        fakeAccounts.add(new Account("3", "CH-4452", BigDecimal.valueOf(12.50), "USD", AccountStatus.FROZEN));
+   
+    
+    public List<Account> retrieveAllCustomerAccounts(String customerUsername) {
+      
+        List<Customer> customers = fakeDataBase.customers;
+         Predicate<? super Customer> predicate = c -> c.getCustomerUsername().equalsIgnoreCase(customerUsername);
+         Optional<Customer> optional = customers.stream().filter(predicate).findFirst();
+         return optional.get().getAccounts();
+        
     }
-    public List<Account> retrieveAllAccounts() {
-        // TODO Auto-generated method stub
-        return fakeAccounts;
-    }
-    public Account retrieveAccountByID(String accountID) {
-        // TODO Auto-generated method stub
+    public Account retrieveCustomerAccountByID(String customerUsername, String accountID) {
+        
         Predicate<? super Account> predicate = a -> a.getAccountID().equalsIgnoreCase(accountID);
-        Optional<Account> optionalAccount = fakeAccounts.stream()
+        Optional<Account> optionalAccount = retrieveAllCustomerAccounts(customerUsername).stream()
                                                         .filter(predicate)
                                                         .findFirst();
 
@@ -52,7 +52,9 @@ public class AccountService {
         String randomID = new BigInteger(32, secureRandom).toString();
         return randomID;
         }
-    public String createNewAccount() {
+
+
+    public String createNewAccount(String customerUsername) {
         // TODO Auto-generated method stub
         Account newAccount = new Account();
 
@@ -66,8 +68,11 @@ public class AccountService {
         newAccount.setBalance(BigDecimal.valueOf(0.00));
         newAccount.setCurrencyType("USD");
         newAccount.setAccountStatus(AccountStatus.ACTIVE);
-
-        fakeAccounts.add(newAccount);
+        Predicate<? super Customer> predicate = c -> c.getCustomerUsername().equalsIgnoreCase(customerUsername);
+        Optional<Customer> optional = fakeDataBase.customers.stream().filter(predicate).findFirst();
+        optional.get().getAccounts().add(newAccount);
         return newAccount.getAccountID();
     }
+   
+   
 }

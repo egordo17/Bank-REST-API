@@ -10,10 +10,13 @@ it represents, and how to use it.
 package com.egordo17.SpringBoot.bank_rest_api;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.ArrayList; // Add this import
 import lombok.AllArgsConstructor;
 
 
-@Data 
+@Data
 @NoArgsConstructor 
 @AllArgsConstructor
 public class Customer {
@@ -41,6 +44,8 @@ public class Customer {
     private String employerName;
     private int incomeRange;
     private String sourceOfWealth;
+
+    private List<Account> accounts = new ArrayList<>();
 
  
  

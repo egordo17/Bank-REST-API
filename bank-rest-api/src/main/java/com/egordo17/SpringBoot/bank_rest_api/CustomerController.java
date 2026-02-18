@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,9 +37,21 @@ public class CustomerController {
         return customerService.retrieveCustomerByUsername(customerUsername);
     }
 
-    @RequestMapping("/Customer/{customerUsername}")
+    @RequestMapping(value ="/Customers/Customer/{customerUsername}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateCustomerByUsername(@PathVariable String customerUsername, @PathVariable Customer updatedCustomer){
         customerService.updateCustomerByUsername(customerUsername, updatedCustomer);
         return ResponseEntity.noContent().build();
     }
+
+    @RequestMapping(value = "/Customers/Customer", method = RequestMethod.POST)
+    public void registerNewCustomer(@PathVariable Customer newCustomer){
+        customerService.registerNewCustomer(newCustomer);
+    }
+
+    @RequestMapping(value = "/Customers/Customer/{customerUsername}", method = RequestMethod.DELETE)
+    public void deleteCustomerByUsername(@PathVariable String customerUsername){
+        customerService.deleteCustomerByUsername(customerUsername);
+    }
+
+
 }

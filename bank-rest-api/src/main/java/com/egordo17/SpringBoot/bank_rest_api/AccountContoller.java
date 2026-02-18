@@ -9,6 +9,7 @@ it represents, and how to use it.
 */
 package com.egordo17.SpringBoot.bank_rest_api;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 
@@ -30,14 +31,14 @@ public class AccountContoller {
         this.accountService = accountService;
     }
 
-    @RequestMapping("/Accounts")
-    public List<Account> retrieveAllAccounts(){
-        return accountService.retrieveAllAccounts();
+    @RequestMapping("/Customer/Accounts")
+    public List<Account> retrieveAllCustomerAccounts(@PathVariable String customerUsername){
+        return accountService.retrieveAllCustomerAccounts(customerUsername);
     }
 
-    @RequestMapping("/Accounts/{accountID}")
-    public Account retrieveAccountByID(@PathVariable String accountID){
-        Account account = accountService.retrieveAccountByID(accountID);
+    @RequestMapping("/Customer/Accounts/{accountID}")
+    public Account retrieveCustomerAccountByID(@PathVariable String customerUsername, @PathVariable String accountID){
+        Account account = accountService.retrieveCustomerAccountByID(customerUsername, accountID);
 
         if(account == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -45,15 +46,15 @@ public class AccountContoller {
         return account;
     }
 
-    @RequestMapping(value = "/Accounts", method = RequestMethod.POST)
-    public ResponseEntity<Object> createNewAccount(){
-        String savedAccount = accountService.createNewAccount();
+    @RequestMapping(value = "/Customer/Accounts", method = RequestMethod.POST)
+    public ResponseEntity<Object> createNewAccount(@PathVariable String customerUsername){
+        String savedAccount = accountService.createNewAccount(customerUsername);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/{savedAccount}").buildAndExpand(savedAccount).toUri();
         return ResponseEntity.created(location).build();
     }
 
-    
+   
 
 
     
