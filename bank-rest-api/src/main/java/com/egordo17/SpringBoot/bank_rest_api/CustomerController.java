@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,13 +39,13 @@ public class CustomerController {
     }
 
     @RequestMapping(value ="/Customers/Customer/{customerUsername}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateCustomerByUsername(@PathVariable String customerUsername, @PathVariable Customer updatedCustomer){
+    public ResponseEntity<Object> updateCustomerByUsername(@PathVariable String customerUsername, @RequestBody Customer updatedCustomer){
         customerService.updateCustomerByUsername(customerUsername, updatedCustomer);
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "/Customers/Customer", method = RequestMethod.POST)
-    public void registerNewCustomer(@PathVariable Customer newCustomer){
+    public void registerNewCustomer(@RequestBody Customer newCustomer){
         customerService.registerNewCustomer(newCustomer);
     }
 

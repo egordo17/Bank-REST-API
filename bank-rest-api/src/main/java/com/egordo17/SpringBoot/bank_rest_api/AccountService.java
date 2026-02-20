@@ -9,17 +9,15 @@ it represents, and how to use it.
 */
 package com.egordo17.SpringBoot.bank_rest_api;
 
-import java.io.ObjectInputFilter.Status;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.function.Predicate;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AccountService {
@@ -73,6 +71,56 @@ public class AccountService {
         optional.get().getAccounts().add(newAccount);
         return newAccount.getAccountID();
     }
+    public void deleteCustomerAccountByID(String customerUsername, String accountID) {
+        // TODO Auto-generated method stub
+        List<Account> accounts = retrieveAllCustomerAccounts(customerUsername);
+        if(accounts == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
+        }
+        Predicate<? super Account> predicate = a -> a.getAccountID().equalsIgnoreCase(accountID);
+        accounts.removeIf(predicate);
+    }
+    public void depositToCustomerByAccountID(String customerUsername, String accountID, BigDecimal amount) {
+        // TODO Auto-generated method stub
+        Account account = retrieveCustomerAccountByID(customerUsername, accountID);
+        if(account == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
+        }
+        if(account.getAccountStatus() != AccountStatus.ACTIVE){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account is not active");
+        }
+        if(amount.compareTo(BigDecimal.ZERO) <= 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Deposit amount must be greater than zero");
+        }
+
+        account.setBalance(account.getBalance().add(amount));
+    }
+
+    public void withdrawFromCustomerByAccountID(String customerUsername, String accountID, BigDecimal amount) {
+        // TODO Auto-generated method stub
+        Account account = retrieveCustomerAccountByID(customerUsername, accountID);
+        if(account == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
+        }
+        if(account.getAccountStatus() != AccountStatus.ACTIVE){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account is not active");
+        }
+        if(account.getBalance().compareTo(amount) < 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient funds");
+        }
+        account.setBalance(amount.subtract(account.getBalance()));
+    }
+    public void updateCustomerAccountStatusByID(String customerUsername, String accountID,
+            AccountStatus accountStatus) {
+        // TODO Auto-generated method stub
+        Account account = retrieveCustomerAccountByID(customerUsername, accountID);
+        if(account == null){
+            throw new ResponseStatusException(null, "Account not found");
+        }
+        account.setAccountStatus(accountStatus);
+    }
+
+    
    
    
 }

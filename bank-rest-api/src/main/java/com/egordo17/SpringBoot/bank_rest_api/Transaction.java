@@ -10,6 +10,10 @@ it represents, and how to use it.
 package com.egordo17.SpringBoot.bank_rest_api;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 
 
@@ -17,6 +21,11 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor 
 @AllArgsConstructor
 public class Transaction {
+    private String transactionID;
     private String sender_account;
     private String reciever_account;
+    private BigDecimal amount;
+    private String cardNumber;
+    private LocalDateTime timeStamp;
+
 }

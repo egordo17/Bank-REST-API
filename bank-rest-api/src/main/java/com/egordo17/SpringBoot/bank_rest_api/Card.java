@@ -17,7 +17,8 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor 
 @AllArgsConstructor
 public class Card {
-    private String card_number;
+    private String cardNumber;
+    private String accountID;
     private String expiry;
     private boolean status;
 }
